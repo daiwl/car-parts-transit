@@ -37,7 +37,7 @@ public class YandexMailConfiguration {
         props.put("mail.smtp.ssl.enable", "true");
         props.put("mail.smtp.quitwait", "false");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.debug", "true");
+//        props.put("mail.debug", "true");
         return props;
     }
 }

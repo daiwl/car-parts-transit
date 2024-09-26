@@ -25,7 +25,7 @@ public class LoadAndSendPriceListToArlanAvtoUsecase {
     public void run() {
         Optional<PriceListExcelFile> file = emailAdapter.loadPriceListExcelFile();
         if (file.isEmpty()) {
-            log.warn("Не удалось загрузить файл с прайс листом");
+            log.warn("Нет новых писем с прайс листом");
             return;
         }
         log.info("Файл с прайс листом загружен. Дата: {}", file.get().date());

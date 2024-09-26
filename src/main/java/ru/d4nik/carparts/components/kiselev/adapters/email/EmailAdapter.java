@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import ru.d4nik.carparts.components.kiselev.domain.PriceListExcelFile;
 import ru.d4nik.carparts.components.kiselev.infra.MyMailProperies;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
@@ -74,7 +75,7 @@ public class EmailAdapter {
                             priceListExcel = PriceListExcelFile.builder()
                                     .fileName(MimeUtility.decodeText(part.getFileName()))
                                     .date(sentDate.toInstant())
-                                    .inputStream(part.getInputStream())
+                                    .inputStream(new ByteArrayInputStream(part.getInputStream().readAllBytes()))
                                     .build();
                         }
                     }
