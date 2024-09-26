@@ -1,0 +1,31 @@
+spring:
+  application:
+     name: car-parts-transit
+  profiles:
+    active: prod
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:car_parts_transit}
+    username: ${DB_USERNAME:test}
+    password: ${DB_PASSWORD:test}
+    driverClassName: org.postgresql.Driver
+    hikari:
+      connection-timeout: 1000
+      minimum-idle: ${DB_MINIMUM_IDLE:5}
+      maximum-pool-size: ${DB_MAXIMUM_POOL_SIZE:50}
+  liquibase:
+    change-log: classpath:/db/db.changelog.xml
+    enabled: true
+  jmx:
+    enabled: true
+
+server:
+  port: 8888
+  forward-headers-strategy: framework
+  shutdown: graceful
+  servlet:
+    context-path: /
+    application-display-name: ${spring.application.name}
+  tomcat:
+    threads:
+      max: ${TOMCAT_MAX_THREADS:200}
+
