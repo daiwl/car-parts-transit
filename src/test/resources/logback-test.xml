@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>false</withJansi>
+        <encoder>
+            <pattern>%green(%.-5level) [%.15thread] %cyan(%d{HH:mm:ss.SSS}) %yellow(%-45.45logger) %white(%msg) %n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+    </root>
+
+    <logger name="liquibase.changelog" level="error"/>
+
+</configuration>

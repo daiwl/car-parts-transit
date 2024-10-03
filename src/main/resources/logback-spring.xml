@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProfile name="prod">
+        <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+            <withJansi>true</withJansi>
+            <encoder>
+                <pattern>%green(%.-5level) [%.15thread] %cyan(%d{HH:mm:ss.SSS}) %yellow(%-25.25logger) %white(%msg) %n
+                </pattern>
+            </encoder>
+        </appender>
+
+        <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>${FILE_LOG_THRESHOLD}</level>
+            </filter>
+
+            <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+            <property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd'T'HH:mm:ss.SSSXXX}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:-} --- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%t] ${LOG_CORRELATION_PATTERN:-}%-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+            <property name="FILE_LOG_CHARSET" value="${FILE_LOG_CHARSET:-${file.encoding:-UTF-8}}"/>
+            <property name="FILE_LOG_THRESHOLD" value="${FILE_LOG_THRESHOLD:-TRACE}"/>
+            <property name="FILE_LOG_STRUCTURED_FORMAT" value="${FILE_LOG_STRUCTURED_FORMAT:-}"/>
+
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+                <charset>${FILE_LOG_CHARSET}</charset>
+            </encoder>
+            <file>${LOG_FILE}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOGBACK_ROLLINGPOLICY_FILE_NAME_PATTERN:-${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz}</fileNamePattern>
+                <cleanHistoryOnStart>${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}</cleanHistoryOnStart>
+                <maxFileSize>${LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE:-10MB}</maxFileSize>
+                <totalSizeCap>${LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP:-0}</totalSizeCap>
+                <maxHistory>${LOGBACK_ROLLINGPOLICY_MAX_HISTORY:-7}</maxHistory>
+            </rollingPolicy>
+        </appender>
+
+        <property name="log.root.level" value="${LOG_ROOT_LEVEL:-INFO}"/>
+        <property name="log.app.level" value="${LOG_HTTP_REQUESTS_LEVEL:-INFO}"/>
+        <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+            <level value="${log.app.level}"/>
+        </logger>
+        <root level="${log.root.level}">
+            <appender-ref ref="stdout"/>
+            <appender-ref ref="file"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+            <withJansi>true</withJansi>
+            <encoder>
+                <pattern>%green(%.-5level) [%.15thread] %cyan(%d{HH:mm:ss.SSS}) %yellow(%-45.45logger) %white(%msg) %n
+                </pattern>
+            </encoder>
+        </appender>
+
+        <property name="log.root.level" value="${LOGGING_LEVEL_ROOT:-DEBUG}"/>
+
+        <root level="${log.root.level}">
+            <appender-ref ref="stdout"/>
+        </root>
+    </springProfile>
+
+</configuration>
