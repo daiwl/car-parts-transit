@@ -4,7 +4,7 @@ spring:
   profiles:
     active: prod
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:car_parts_transit}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:raspreadval}
     username: ${DB_USERNAME:test}
     password: ${DB_PASSWORD:test}
     driverClassName: org.postgresql.Driver
@@ -29,3 +29,6 @@ server:
     threads:
       max: ${TOMCAT_MAX_THREADS:200}
 
+logging:
+  level:
+    root: INFO

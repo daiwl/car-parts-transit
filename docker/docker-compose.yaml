@@ -1,0 +1,36 @@
+services:
+  raspreadval-postgres:
+    container_name: raspreadval-postgres
+    hostname: postgreshost
+    image: postgres:13.3
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      PGDATA: /data/postgres
+    volumes:
+      - ${VOLUMES_DIR}/postgres/data:/data/postgres
+      - ${VOLUMES_DIR}/postgres/initdb/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+    networks:
+      - raspreadval-net
+  raspreadval:
+    container_name: raspreadval
+    image: raspreadval-app:1.0.0
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - raspreadval-postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_HOST=postgreshost
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - LOG_PATH=${LOG_PATH}
+      - VOLUMES_DIR=${VOLUMES_DIR}
+    networks:
+      - raspreadval-net
+
+networks:
+  raspreadval-net:
+    driver: bridge

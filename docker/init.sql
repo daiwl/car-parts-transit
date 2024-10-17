@@ -1,0 +1,7 @@
+CREATE USER testuser WITH ENCRYPTED PASSWORD 'P@ssw0rd';
+
+ALTER USER testuser WITH SUPERUSER;
+
+-- init DB
+CREATE DATABASE raspreadval;
+GRANT ALL PRIVILEGES ON DATABASE raspreadval TO testuser;
